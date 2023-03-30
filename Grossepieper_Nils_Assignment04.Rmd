@@ -198,5 +198,38 @@ sum(predict(clf_svm, testing_data) == testing_data$result) / nrow(testing_data)
 
 ```
 
+(8) Get Random Forest predictions for the three images provided in the folder imgs/test. Remember to
+preprocess the images first. What is the model’s opinion on Chicago Deep Dish Pizza?
+
+```{r}
+
+# Get Random Forest predictions for the three images provided in the folder imgs/test:
+test_directory <- "C:/Users/gross/OneDrive/Dokumente/imgs/test"
+
+# In to preprocess the images I had to change the names of the three images to
+# pizza_01, not_pizza_02 and pizza_03
+test_data = preprocess(test_directory)
+
+# Transform the data into csv and import the csv data:
+write.matrix(test_data, sep = ",",
+             file = "C:/Users/gross/OneDrive/Dokumente/Grossepieper_Nils_Assignment04/pizza_test_data_R.csv")
+pizza_test_data <- read.csv("pizza_test_data_R.csv", header = FALSE)
+
+# Now I can apply the decision tree model to the test data:
+prediction_test_data <- predict(clf_rf, pizza_test_data)
+prediction_test_data
+sum(predict(clf_knn, pizza_test_data) == pizza_test_data[,1]) /
+  nrow(pizza_test_data)
+pizza_test_data$V1
+
+# The third prediction is for the Chicago Deep Dish Pizza and you can see that
+# the decision tree model predicts that the Chicago Deep Dish Pizza is a pizza.
+# The results differ in Python, where the model can not recognize the Chicago Deep
+# Dish Pizza as a pizza.
+
+```
+
+(9) Export the Random Forest model using the function readr::write_rds() in R and the {joblib} package
+in Python.
 
 
