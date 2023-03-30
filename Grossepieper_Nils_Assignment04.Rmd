@@ -70,6 +70,15 @@ ncol(image_data)
 
 ```
 
+(3) Print the top-left 5x5 submatrix of the result.
+
+```{r}
+
+# Print the top left 5x5 sub matrix of the image_data matrix:
+submatrx_of_image_data <- image_data[1:5, 1:5]
+submatrx_of_image_data
+
+```
 
 
 
