@@ -5,26 +5,72 @@ date: "2023-03-27"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+(1) In the folder data you will find the original images. Each image is labeled as either pizza or no pizza.
+Apply the pipeline below and export to csv.
+
+```{r, warning=FALSE, message=FALSE}
+
+# Get the image directory:
+image_directory <- "C:/Users/gross/OneDrive/Dokumente/imgs/training"
+
+# pipeline template R
+library(tidyverse)
+library(OpenImageR)
+
+# define the pipeline
+pipeline <- function(img) {
+  img %>%
+    resizeImage(200, 200, method = "bilinear") %>%
+    rgb_2gray() %>%
+    HOG(cells = 10, orientations = 9)
+}
+
+preprocess <- function(image_directory, auto_labels = T) {
+  # list all images in the folder
+  files <- list.files(image_directory,
+                      pattern = "*.jpg", full.names = T)
+  # read all images
+  images <- map(files, readImage)
+  # apply the pipeline to each image
+  preprocessed <- map(images, pipeline)
+  # stack the list in a matrix
+  preprocessed_matrix <- matrix(unlist(preprocessed),
+                                ncol = 900, byrow = TRUE)
+  if(auto_labels) {
+    # infer labels from file names
+    preprocessed_matrix <- cbind(str_extract(files, "(not_)*pizza"),
+                                 preprocessed_matrix)
+  }
+  # return the matrix
+  return(preprocessed_matrix)
+}
+
+# Run the functions:
+image_data <- preprocess(image_directory)
+
+# Export image_data to as csv file:
+library(MASS)
+write.matrix(image_data, sep = ",",
+             file = "C:/Users/gross/OneDrive/Dokumente/Grossepieper_Nils_Assignment04/pizza_data_R.csv")
+
 ```
 
-## R Markdown
+(2) Print the shape (i.e., dimension) of the preprocessed result.
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{r}
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+# Print the dimension of the reprocessed result:
+dim(image_data)
 
-```{r cars}
-summary(cars)
+# or do it in two steps
+nrow(image_data)
+ncol(image_data)
+
+# The matrix image_data has 1966 rows and 901 columns.
+
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
