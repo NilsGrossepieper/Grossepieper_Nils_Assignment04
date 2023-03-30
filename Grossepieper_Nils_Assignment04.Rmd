@@ -109,3 +109,55 @@ testing_data <- pizza_data[-est_index, ]
 
 ```
 
+(5) Train a kNN and a Random Forest on the training data. Each column of the matrix corresponds to one
+feature in the ML model.
+
+```{r, warning=FALSE, message=FALSE}
+
+# Import all necessary packages:
+library(tidymodels)
+library(kknn)
+library(randomForest)
+
+
+# First I do the kNN model:
+
+# First I define the recipe
+rec_knn <- recipe(result ~ ., data = training_data)
+
+# Second I define the model
+mod_knn <- nearest_neighbor() %>%
+  set_engine("kknn") %>%
+  set_mode("classification")
+
+# Third I combine both into a workflow
+wf_knn <- workflow() %>% add_recipe(rec_knn) %>% add_model(mod_knn)
+
+# Fourth I train the model
+clf_knn <- wf_knn %>% fit(data = training_data)
+
+
+# Secondly I do the random forest model:
+
+# First I define the recipe
+rec_rf <- recipe(result ~ ., data = training_data)
+
+# Second I define the model
+mod_rf <- rand_forest() %>%
+  set_engine("randomForest") %>%
+  set_mode("classification")
+
+# Third I combine both into a workflow
+wf_rf <- workflow() %>% add_recipe(rec_rf) %>% add_model(mod_rf)
+
+# Fourth I train the model
+clf_rf <- wf_rf %>% fit(data = training_data)
+
+```
+
+
+
+
+
+
+
