@@ -179,7 +179,24 @@ clf_svm <- wf_svm %>% fit(data = training_data)
 
 ```
 
+(7) Evaluate the models on the test data. Which model performs best in terms of accuracy?
 
+```{r}
+
+# Which model perform best in terms of accuracy?
+sum(predict(clf_knn, testing_data) == testing_data$result) / nrow(testing_data)
+sum(predict(clf_rf, testing_data) == testing_data$result) / nrow(testing_data)
+sum(predict(clf_svm, testing_data) == testing_data$result) / nrow(testing_data)
+
+# Accuracy is defined as the share of correctly specified cases divided by the
+# entire amount of cases. You can define accuracy as the amount of percent in 
+# which the model is right.
+# The kNN model is the worst it is only right in 59.7% of all cases, second is
+# the support vector machine model which is right in 61.9% of all cases and the
+# best model in this case is the decision tree which is right in 75.8% of all cases.
+# These results differ a bit from the results in Python.
+
+```
 
 
 
