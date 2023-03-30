@@ -232,4 +232,16 @@ pizza_test_data$V1
 (9) Export the Random Forest model using the function readr::write_rds() in R and the {joblib} package
 in Python.
 
+```{r}
 
+# Export the Random Forest model using readr::write_rds():
+# I could not find a method to export the decision tree model with readr::write_rds(),
+# therefor I use a different method
+
+# Save the model to disk:
+readr::write_rds(clf_rf, "C:/Users/gross/OneDrive/Dokumente/Grossepieper_Nils_Assignment04/clf_rf_r.rds")
+
+# Load the model:
+loaded_model <- readRDS("C:/Users/gross/OneDrive/Dokumente/Grossepieper_Nils_Assignment04/clf_rf_r.rds")
+
+```
