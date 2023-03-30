@@ -155,7 +155,29 @@ clf_rf <- wf_rf %>% fit(data = training_data)
 
 ```
 
+(6) Also implement a Support Vector Machine (SVM). In R, use the package {LiblineaR}. In Python, use the
+modules from {sklearn.svm}.
 
+```{r, warning=FALSE, message=FALSE}
+
+# Implement a support vector machine:
+library(LiblineaR)
+
+# First I define the recipe
+rec_svm <- recipe(result ~ ., data = training_data)
+
+# Second I define the model
+mod_svm <- svm_linear() %>%
+  set_engine("LiblineaR") %>%
+  set_mode("classification")
+
+# Third I combine both into a workflow
+wf_svm <- workflow() %>% add_recipe(rec_svm) %>% add_model(mod_svm)
+
+# Fourth I train the model
+clf_svm <- wf_svm %>% fit(data = training_data)
+
+```
 
 
 
