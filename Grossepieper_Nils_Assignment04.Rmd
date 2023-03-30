@@ -80,6 +80,32 @@ submatrx_of_image_data
 
 ```
 
+(4) Import the matrix from the last part and perform a 70:30 train-test split using 42 as seed.
 
+```{r}
 
+# First I import the pizza_data csv file:
+new_working_directory <- setwd("C:/Users/gross/OneDrive/Dokumente/Grossepieper_Nils_Assignment04")
+pizza_data <- read.csv("pizza_data_R.csv", header = FALSE)
+
+# I have to drop the NA values or else the random forest model will not work
+pizza_data <- na.omit(pizza_data)
+
+# Have a look at pizza_data:
+# head(pizza_data)
+
+# Give the first column a name:
+names(pizza_data)[1] <- "result"
+
+# Set up a seed:
+my_seed_one <- 42
+set.seed(my_seed_one)
+
+# Do the sample split:
+est_index <- sample(nrow(pizza_data), size = 0.7 * nrow(pizza_data),
+                    replace = FALSE)
+training_data <- pizza_data[est_index, ]
+testing_data <- pizza_data[-est_index, ]
+
+```
 
